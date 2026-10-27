@@ -1,4 +1,12 @@
 
 from sklearn.datasets import fetch_california_housing
+
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import 
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+import pandas as pd
+
+import joblib
