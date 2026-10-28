@@ -12,12 +12,12 @@ features = joblib.load("C:\Users\hp303\OneDrive\Documents\C.S.E\Python\House_Pre
 class HouseFeaturess(BaseModel):
     MedInc : float=Field(gt=0, description="Median Income of Neighbourhood")
     HouseAge: float=Field(gt=0, description="Average age of House")
-    AvgRooms: float = Field(gt=0, description="Average number of rooms")
-    AvgBedrms: float = Field(gt=0, description="Average number of rooms")
+    AveRooms: float = Field(gt=0, description="Average number of rooms")
+    AveBedrms: float = Field(gt=0, description="Average number of rooms")
     Population: float = Field(gt=0, description="Total Population in Neighbourhood")    
     AveOccup: float = Field(gt=0, description="Average number of Occup")
     Latitude: float = Field(gt=32, le=42, description="Latitude")
-    Longitude: float = Field(gt=-125, le=-114 description="Longitude")
+    Longitude: float = Field(gt=-125, le=-114, description="Longitude")
 
 #home
 @app.get("/")
@@ -35,6 +35,35 @@ def health():
         "model": "RandomForestRegressor",
         "features": features,
         "avg_error": "$39,000",
-        
+
     }
 
+#prediction
+@app.post("/predict")
+def predict(house: HouseFeaturess):
+    try:
+        input_data = pd.DataFrame([{
+            "MedInc": house.MedInc,
+            "HouseAge": house.HouseAge,
+            "AveRooms": house.AvgRooms,
+            "AveBedrooms": house.AveBedrms,
+            "Population": house.Population,
+            "AveOccup": house.AveOccup,
+            "Latitude": house.Latitude,
+            "Longitude": house.Longitude,
+        }])
+
+        predicted = model.predict(input)[0]
+        price_usd = predicted *10000
+
+        return {
+            "predicted_price": f"${price_usd:,.0f}",
+            "predicted_price_short": f"${predicted:.2f} hundred thousand",
+            "fidence_range":f"${price_usd - 39000:,.0f}",   
+        }
+
+    except Exception as e:
+        raise HTTPException (
+            status_code=500,
+            detail="Prediction Failed",
+        )
