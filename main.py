@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 app = FastAPI()
 
 model = joblib.load("house_model.joblib")
-features = joblib.load("C:\Users\hp303\OneDrive\Documents\C.S.E\Python\House_Predict_API\house_model.joblib")
+features = joblib.load(r"C:\Users\hp303\OneDrive\Documents\C.S.E\Python\House_Predict_API\house_model.joblib")
 
 #input schema
 class HouseFeaturess(BaseModel):
