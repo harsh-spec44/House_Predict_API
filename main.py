@@ -59,11 +59,11 @@ def predict(house: HouseFeaturess):
         return {
             "predicted_price": f"${price_usd:,.0f}",
             "predicted_price_short": f"${predicted:.2f} hundred thousand",
-            "fidence_range":f"${price_usd - 39000:,.0f}",   
+            "fidence_range":f"${price_usd - 39000:,.0f} to ${price_usd + 39000:,.0f}",   
         }
 
     except Exception as e:
         raise HTTPException (
             status_code=500,
-            detail="Prediction Failed",
+            detail="Prediction Failed: {str(e)}",
         )
