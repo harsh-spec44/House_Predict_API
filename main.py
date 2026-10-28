@@ -31,6 +31,10 @@ def home():
 @app.get("/health")
 def health():
     return {
+        "status":"running",
+        "model": "RandomForestRegressor",
+        "features": features,
+        "avg_error": "$39,000",
         
     }
 
